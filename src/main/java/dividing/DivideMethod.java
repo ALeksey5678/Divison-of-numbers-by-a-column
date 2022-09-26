@@ -2,6 +2,12 @@
 package dividing;
 
 public class DivideMethod {
+    private static final String FORMATING_OF="%";
+    private static final String STRING="s";
+    private static final String LINE_FEED="\n";
+    private static final Character LINE_FEED_CHAR='\n';
+    private static final String EMPTY = "";
+    private static final String DIGIT="d";
 
     private final StringBuilder result = new StringBuilder();
     private final StringBuilder quotient = new StringBuilder();//частное
@@ -19,14 +25,14 @@ public class DivideMethod {
             throw new IllegalArgumentException("Dividend can't be less than divisor");
         }
 
-        String[] digits = String.valueOf(dividend).split("");
+        String[] digits = String.valueOf(dividend).split(EMPTY);
         int partOfDividendNumber;//делимое(часть от большого числа)
         int resultOfDividing;//число после итерации части делимого/делитель
         int mod;//остаток от деления  части делимого на делитель
 
-        for (int i = 0; i < digits.length; i++) {
+        for (int indexOfDigitInArray = 0; indexOfDigitInArray < digits.length; indexOfDigitInArray++) {
 
-            partOfDividend.append(digits[i]);
+            partOfDividend.append(digits[indexOfDigitInArray]);
             partOfDividendNumber = Integer.parseInt(partOfDividend.toString());
 
             if (partOfDividendNumber >= divisor) {
@@ -34,14 +40,14 @@ public class DivideMethod {
                 mod = partOfDividendNumber % divisor;
                 resultOfDividing = partOfDividendNumber;
 
-                String lastReminder = String.format("%" + (i + 2) + "s", "_" + partOfDividendNumber);
-                result.append(lastReminder).append("\n");
+                String lastReminder = String.format(FORMATING_OF + (indexOfDigitInArray + 2) + STRING, "_" + partOfDividendNumber);
+                result.append(lastReminder).append(LINE_FEED);
 
-                String multiply = String.format("%" + (i + 2) + "d", resultOfDividing);
-                result.append(multiply).append("\n");
+                String multiply = String.format(FORMATING_OF+ (indexOfDigitInArray + 2) + DIGIT, resultOfDividing);
+                result.append(multiply).append(LINE_FEED);
 
                 Integer tab = lastReminder.length() - calculateDigit(resultOfDividing);
-                result.append(createDivisor(resultOfDividing, tab)).append("\n");
+                result.append(createDivisor(resultOfDividing, tab)).append(LINE_FEED);
 
                 quotient.append(partOfDividendNumber / divisor);
 
@@ -49,8 +55,8 @@ public class DivideMethod {
                 partOfDividendNumber = Integer.parseInt(partOfDividend.toString());
 
             }
-            if (i == digits.length - 1) {
-                result.append(String.format("%" + (i + 2) + "s", partOfDividendNumber)).append("\n");
+            if (indexOfDigitInArray == digits.length - 1) {
+                result.append(String.format(FORMATING_OF + (indexOfDigitInArray + 2) + STRING, partOfDividendNumber)).append(LINE_FEED);
             }
         }
         modifyResultView(dividend, divisor);
@@ -72,7 +78,7 @@ public class DivideMethod {
     private void modifyResultView(Integer dividend, Integer divisor) {
         int[] index = new int[3];
         for (int i = 0, j = 0; i < result.length(); i++) {
-            if (result.charAt(i) == '\n') {
+            if (result.charAt(i) == LINE_FEED_CHAR) {
                 index[j] = i;
                 j++;
             }
