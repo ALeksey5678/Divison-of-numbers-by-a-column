@@ -14,7 +14,8 @@ public class Starter  {
         int dividend=scanner.nextInt();
         System.out.println("Press divider for division :");
         int divider= scanner.nextInt();
-        System.out.println(divide.division(dividend,divider));
+//        System.out.println(divide.division(dividend,divider));
+        System.out.println();
     }
 
 }

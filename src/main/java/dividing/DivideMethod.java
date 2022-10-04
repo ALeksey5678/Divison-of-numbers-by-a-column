@@ -2,12 +2,18 @@
 package dividing;
 
 public class DivideMethod {
-    private static final String FORMATING_OF="%";
-    private static final String STRING="s";
     private static final String LINE_FEED="\n";
     private static final Character LINE_FEED_CHAR='\n';
     private static final String EMPTY = "";
-    private static final String DIGIT="d";
+    private static final int ADDITIONAL_SPACE_IN_LINE = 2;
+    private static final char CHAR_SPACE = ' ';
+    private static final char CHAR_DASH = '-';
+    private static final String UNDERSCORE = "_";
+    private static final String VERTICAL_LINE = "│";
+    private static final int ONE = 1;
+    private static final int indexPositionOfDivisor=0;
+    private static final int indexPositionOfLineSpliter=1;
+    private static final int indexPositionOfQuotient=2;
 
     private final StringBuilder result = new StringBuilder();
     private final StringBuilder quotient = new StringBuilder();//частное
@@ -40,13 +46,13 @@ public class DivideMethod {
                 mod = partOfDividendNumber % divisor;
                 resultOfDividing = partOfDividendNumber;
 
-                String lastReminder = String.format(FORMATING_OF + (indexOfDigitInArray + 2) + STRING, "_" + partOfDividendNumber);
+                String lastReminder = String.format("%" + (indexOfDigitInArray + ADDITIONAL_SPACE_IN_LINE) + "s", UNDERSCORE + partOfDividendNumber);
                 result.append(lastReminder).append(LINE_FEED);
 
-                String multiply = String.format(FORMATING_OF+ (indexOfDigitInArray + 2) + DIGIT, resultOfDividing);
+                String multiply = String.format("%" + (indexOfDigitInArray + ADDITIONAL_SPACE_IN_LINE) + "d", resultOfDividing);
                 result.append(multiply).append(LINE_FEED);
 
-                Integer tab = lastReminder.length() - calculateDigit(resultOfDividing);
+                Integer tab = lastReminder.length() - calculateDigits(resultOfDividing);
                 result.append(createDivisor(resultOfDividing, tab)).append(LINE_FEED);
 
                 quotient.append(partOfDividendNumber / divisor);
@@ -55,20 +61,20 @@ public class DivideMethod {
                 partOfDividendNumber = Integer.parseInt(partOfDividend.toString());
 
             }
-            if (indexOfDigitInArray == digits.length - 1) {
-                result.append(String.format(FORMATING_OF + (indexOfDigitInArray + 2) + STRING, partOfDividendNumber)).append(LINE_FEED);
+            if (indexOfDigitInArray == digits.length - ONE) {
+                result.append(String.format("%" + (indexOfDigitInArray + ADDITIONAL_SPACE_IN_LINE) + "s", partOfDividendNumber)).append(LINE_FEED);
             }
         }
         modifyResultView(dividend, divisor);
         return result.toString();
     }
 
-    private String createDivisor(Integer multiplyResult, Integer tab) {
-        return assemblyString(tab, ' ') + assemblyString(calculateDigit(multiplyResult), '-');
+    public String createDivisor(Integer multiplyResult, Integer tab) {
+        return assemblyString(tab, CHAR_SPACE) + assemblyString(calculateDigits(multiplyResult), CHAR_DASH);
     }
 
-    private int calculateDigit(int i) {
-        return (int) Math.log10(i) + 1;
+    private int calculateDigits(int number) {
+        return (int) Math.log10(number) + ONE;
     }
 
     private String assemblyString(int numberOfSymbols, char symbol) {
@@ -76,23 +82,30 @@ public class DivideMethod {
     }
 
     private void modifyResultView(Integer dividend, Integer divisor) {
+       Positions positions = getPositions();
+
+        int tab = calculateDigits(dividend) + ONE - positions.getPositionOfDivisor();
+        result.insert(positions.getPositionOfQuotient(), assemblyString(tab, CHAR_SPACE) + VERTICAL_LINE + quotient);
+        result.insert(positions.getPositionOfLineSpliter(), assemblyString(tab, CHAR_SPACE) + VERTICAL_LINE + assemblyString(quotient.length(), CHAR_DASH));
+        result.insert(positions.getPositionOfDivisor(), VERTICAL_LINE + divisor);
+        result.replace(1, positions.getPositionOfDivisor(), dividend.toString());
+
+    }
+
+    private Positions getPositions() {
         int[] index = new int[3];
-        for (int i = 0, j = 0; i < result.length(); i++) {
-            if (result.charAt(i) == LINE_FEED_CHAR) {
-                index[j] = i;
-                j++;
+        for (int indexOfDigitInArray = 0, numberOfDigitInArray = 0; indexOfDigitInArray < result.length(); indexOfDigitInArray++) {
+            if (result.charAt(indexOfDigitInArray) == LINE_FEED_CHAR) {
+                index[numberOfDigitInArray] = indexOfDigitInArray;
+                numberOfDigitInArray++;
             }
-            if (j == 3) {
+            if (numberOfDigitInArray == 3) {
                 break;
             }
 
         }
-
-        int tab = calculateDigit(dividend) + 1 - index[0];
-        result.insert(index[2], assemblyString(tab, ' ') + "│" + quotient);
-        result.insert(index[1], assemblyString(tab, ' ') + "│" + assemblyString(quotient.length(), '-'));
-        result.insert(index[0], "│" + divisor);
-        result.replace(1, index[0], dividend.toString());
-
+        return new Positions(index[indexPositionOfDivisor],index[indexPositionOfLineSpliter],index[indexPositionOfQuotient] );
     }
+
+
 }
