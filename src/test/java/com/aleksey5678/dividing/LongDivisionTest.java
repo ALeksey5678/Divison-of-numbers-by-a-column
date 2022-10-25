@@ -2,33 +2,34 @@ package com.aleksey5678.dividing;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class LongDivisionTest {
-    private final LongDivision divide = new LongDivision();
+    private final LongDivision dividing = new LongDivision();
+    private final String expectedResultOfDividing = "_100│3\n" +
+            " 10 │--\n" +
+            " -- │33\n" +
+            " _10\n" +
+            "  10\n" +
+            "  --\n" +
+            "   1\n";
 
     @Test
-    void globalProgramTest() {
+    void shouldReturnFormattedDivisionResultIfValidParameters() {
 
-        String globalResultOFDividing = "_100│3\n" +
-                " 10 │--\n" +
-                " -- │33\n" +
-                " _10\n" +
-                "  10\n" +
-                "  --\n" +
-                "   1\n";
-        assertEquals(globalResultOFDividing, divide.division(100, 3));
+        assertEquals(expectedResultOfDividing, dividing.divide(100, 3));
     }
 
     @Test
-    void shouldTrowIllegalArgumentExceptionIfDivisorIsZero() {
-        String message = assertThrows(IllegalArgumentException.class, () -> divide.division(100, 0)).getMessage();
+    void shouldThrowIllegalArgumentExceptionIfDivisorIsZero() {
+        String message = assertThrows(IllegalArgumentException.class, () -> dividing.divide(100, 0)).getMessage();
         assertEquals("Divisor can't be 0", message);
     }
 
     @Test
-    void shouldTrowIllegalArgumentExceptionWhileDividendLessThanDivisor() {
-        assertThrows(IllegalArgumentException.class, () -> divide.division(50, 100));
+    void shouldThrowIllegalArgumentExceptionWhileDividendLessThanDivisor() {
+        assertThrows(IllegalArgumentException.class, () -> dividing.divide(50, 100));
     }
 
 }
