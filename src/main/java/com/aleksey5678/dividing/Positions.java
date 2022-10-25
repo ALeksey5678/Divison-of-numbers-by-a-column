@@ -1,4 +1,4 @@
-package dividing;
+package com.aleksey5678.dividing;
 
 public  class Positions {
         private final int positionOfDivisor;

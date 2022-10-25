@@ -1,11 +1,11 @@
-package dividing;
+package com.aleksey5678.dividing;
 
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class DivideMethodTest {
-    private final DivideMethod divide = new DivideMethod();
+class LongDivisionTest {
+    private final LongDivision divide = new LongDivision();
 
     @Test
     void globalProgramTest() {

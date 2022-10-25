@@ -1,7 +1,6 @@
-package dividing;
+package com.aleksey5678.dividing;
 
-public class DivideMethod {
-  private static final String LINE_FEED = "\n";
+public class LongDivision {
   private static final Character LINE_FEED_CHAR = '\n';
   private static final String EMPTY = "";
   private static final int ADDITIONAL_SPACE_IN_LINE = 2;
@@ -10,9 +9,9 @@ public class DivideMethod {
   private static final String UNDERSCORE = "_";
   private static final String VERTICAL_LINE = "│";
   private static final int ONE = 1;
-  private static final int indexPositionOfDivisor = 0;
-  private static final int indexPositionOfLineSpliter = 1;
-  private static final int indexPositionOfQuotient = 2;
+  private static final int POSITION_OF_DIVISOR = 0;
+  private static final int POSITION_OF_LINE_SPLITTER = 1;
+  private static final int POSITION_OF_QUOTIENT = 2;
 
   private final StringBuilder result = new StringBuilder();
   private final StringBuilder quotient = new StringBuilder();
@@ -49,15 +48,15 @@ public class DivideMethod {
             String.format(
                 "%" + (indexOfDigitInArray + ADDITIONAL_SPACE_IN_LINE) + "s",
                 UNDERSCORE + partOfDividendNumber);
-        result.append(lastReminder).append(LINE_FEED);
+        result.append(lastReminder).append(LINE_FEED_CHAR).toString();
 
         String multiply =
             String.format(
                 "%" + (indexOfDigitInArray + ADDITIONAL_SPACE_IN_LINE) + "d", resultOfDividing);
-        result.append(multiply).append(LINE_FEED);
+        result.append(multiply).append(LINE_FEED_CHAR).toString();
 
         Integer tab = lastReminder.length() - calculateDigits(resultOfDividing);
-        result.append(createDivisor(resultOfDividing, tab)).append(LINE_FEED);
+        result.append(createDivisor(resultOfDividing, tab)).append(LINE_FEED_CHAR).toString();
 
         quotient.append(partOfDividendNumber / divisor);
 
@@ -70,7 +69,7 @@ public class DivideMethod {
                 String.format(
                     "%" + (indexOfDigitInArray + ADDITIONAL_SPACE_IN_LINE) + "s",
                     partOfDividendNumber))
-            .append(LINE_FEED);
+            .append(LINE_FEED_CHAR).toString();
       }
     }
     modifyResultView(dividend, divisor);
@@ -120,8 +119,8 @@ public class DivideMethod {
       }
     }
     return new Positions(
-        index[indexPositionOfDivisor],
-        index[indexPositionOfLineSpliter],
-        index[indexPositionOfQuotient]);
+        index[POSITION_OF_DIVISOR],
+        index[POSITION_OF_LINE_SPLITTER],
+        index[POSITION_OF_QUOTIENT]);
   }
 }
