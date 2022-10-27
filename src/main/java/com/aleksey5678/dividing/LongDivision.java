@@ -1,32 +1,32 @@
 package com.aleksey5678.dividing;
 
 public class LongDivision {
-    private static final Character LINE_FEED_CHAR = '\n';
+    public static final Character LINE_FEED = '\n';
     private static final String EMPTY = "";
     private static final int ADDITIONAL_SPACE_IN_LINE = 2;
-    private static final char CHAR_SPACE = ' ';
-    private static final char CHAR_DASH = '-';
+    private static final char SPACE = ' ';
+    private static final char DASH = '-';
     private static final String UNDERSCORE = "_";
     private static final String VERTICAL_LINE = "│";
     private static final int ONE = 1;
-    private static final int POSITION_OF_DIVISOR = 0;
-    private static final int POSITION_OF_LINE_SPLITTER = 1;
-    private static final int POSITION_OF_QUOTIENT = 2;
+    private static final int ZERO=0;
 
     private final StringBuilder result = new StringBuilder();
     private final StringBuilder quotient = new StringBuilder();
     private final StringBuilder partOfDividend = new StringBuilder();
 
     public String divide(int dividend, int divisor) {
+        int dividendAbsolute = Math.abs(dividend);
+        int divisorAbsolute = Math.abs(divisor);
 
-        if (divisor == 0) {
+        if (divisorAbsolute == 0) {
             throw new IllegalArgumentException("Divisor can't be 0");
         }
-        if (dividend < divisor) {
+        if (dividendAbsolute < divisorAbsolute) {
             throw new IllegalArgumentException("Dividend can't be less than divisor");
         }
 
-        String[] digits = String.valueOf(dividend).split(EMPTY);
+        String[] digits = String.valueOf(dividendAbsolute).split(EMPTY);
         int partOfDividendNumber;
         int resultOfDividing; // partOfDividendNumber/divisor
         int mod; // remainder of the partOfDividendNumber
@@ -36,26 +36,26 @@ public class LongDivision {
             partOfDividend.append(digits[indexOfDigitInArray]);
             partOfDividendNumber = Integer.parseInt(partOfDividend.toString());
 
-            if (partOfDividendNumber >= divisor) {
+            if (partOfDividendNumber >= divisorAbsolute) {
 
-                mod = partOfDividendNumber % divisor;
+                mod = partOfDividendNumber % divisorAbsolute;
                 resultOfDividing = partOfDividendNumber;
-// Formating a String result in output if partOfDividendNumber >= divisor
+// Format a String result in output if partOfDividendNumber >= divisor
                 String lastReminder =
                         String.format(
                                 "%" + (indexOfDigitInArray + ADDITIONAL_SPACE_IN_LINE) + "s",
                                 UNDERSCORE + partOfDividendNumber);
-                result.append(lastReminder).append(LINE_FEED_CHAR).toString();
+                result.append(lastReminder).append(LINE_FEED);
 
                 String multiply =
                         String.format(
                                 "%" + (indexOfDigitInArray + ADDITIONAL_SPACE_IN_LINE) + "d", resultOfDividing);
-                result.append(multiply).append(LINE_FEED_CHAR).toString();
+                result.append(multiply).append(LINE_FEED);
 
                 Integer tab = lastReminder.length() - calculateDigits(resultOfDividing);
-                result.append(createDivisor(resultOfDividing, tab)).append(LINE_FEED_CHAR).toString();
+                result.append(createDivisor(resultOfDividing, tab)).append(LINE_FEED);
 
-                quotient.append(partOfDividendNumber / divisor);
+                quotient.append(partOfDividendNumber / divisorAbsolute);
 
                 partOfDividend.replace(0, partOfDividend.length(), Integer.toString(mod));
                 partOfDividendNumber = Integer.parseInt(partOfDividend.toString());
@@ -66,16 +66,16 @@ public class LongDivision {
                                 String.format(
                                         "%" + (indexOfDigitInArray + ADDITIONAL_SPACE_IN_LINE) + "s",
                                         partOfDividendNumber))
-                        .append(LINE_FEED_CHAR).toString();
+                        .append(LINE_FEED);
             }
         }
-        modifyResultView(dividend, divisor);
+        modifyResultView(dividendAbsolute, divisorAbsolute);
         return result.toString();
     }
 
     public String createDivisor(Integer multiplyResult, Integer tab) {
-        return assembleString(tab, CHAR_SPACE)
-                + assembleString(calculateDigits(multiplyResult), CHAR_DASH);
+        return assembleString(tab, SPACE)
+                + assembleString(calculateDigits(multiplyResult), DASH);
     }
 
     private int calculateDigits(int number) {
@@ -83,41 +83,24 @@ public class LongDivision {
     }
 
     private String assembleString(int numberOfSymbols, char symbol) {
-        return String.valueOf(symbol).repeat(Math.max(0, numberOfSymbols));
+        return String.valueOf(symbol).repeat(Math.max(ZERO, numberOfSymbols));
     }
 
     private void modifyResultView(Integer dividend, Integer divisor) {
-        Positions positions = getPositions();
+        Positions positions = Positions.getPositions(result.toString());
 
         int tab = calculateDigits(dividend) + ONE - positions.getPositionOfDivisor();
         result.insert(
                 positions.getPositionOfQuotient(),
-                assembleString(tab, CHAR_SPACE) + VERTICAL_LINE + quotient);
+                assembleString(tab, SPACE) + VERTICAL_LINE + quotient);
         result.insert(
                 positions.getPositionOfLineSplitter(),
-                assembleString(tab, CHAR_SPACE)
+                assembleString(tab, SPACE)
                         + VERTICAL_LINE
-                        + assembleString(quotient.length(), CHAR_DASH));
+                        + assembleString(quotient.length(), DASH));
         result.insert(positions.getPositionOfDivisor(), VERTICAL_LINE + divisor);
-        result.replace(1, positions.getPositionOfDivisor(), dividend.toString());
+        result.replace(ONE, positions.getPositionOfDivisor(), dividend.toString());
     }
 
-    private Positions getPositions() {
-        int[] index = new int[3];
-        for (int indexOfDigitInArray = 0, numberOfDigitInArray = 0;
-             indexOfDigitInArray < result.length();
-             indexOfDigitInArray++) {
-            if (result.charAt(indexOfDigitInArray) == LINE_FEED_CHAR) {
-                index[numberOfDigitInArray] = indexOfDigitInArray;
-                numberOfDigitInArray++;
-            }
-            if (numberOfDigitInArray == 3) {
-                break;
-            }
-        }
-        return new Positions(
-                index[POSITION_OF_DIVISOR],
-                index[POSITION_OF_LINE_SPLITTER],
-                index[POSITION_OF_QUOTIENT]);
-    }
+
 }
