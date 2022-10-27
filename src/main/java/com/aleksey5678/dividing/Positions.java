@@ -4,6 +4,7 @@ public class Positions {
     private static final int POSITION_OF_DIVISOR = 0;
     private static final int POSITION_OF_LINE_SPLITTER = 1;
     private static final int POSITION_OF_QUOTIENT = 2;
+
     private final int positionOfDivisor;
     private final int positionOfLineSplitter;
     private final int positionOfQuotient;

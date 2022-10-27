@@ -9,7 +9,7 @@ public class LongDivision {
     private static final String UNDERSCORE = "_";
     private static final String VERTICAL_LINE = "│";
     private static final int ONE = 1;
-    private static final int ZERO=0;
+    private static final int ZERO = 0;
 
     private final StringBuilder result = new StringBuilder();
     private final StringBuilder quotient = new StringBuilder();
@@ -41,18 +41,18 @@ public class LongDivision {
                 mod = partOfDividendNumber % divisorAbsolute;
                 resultOfDividing = partOfDividendNumber;
 // Format a String result in output if partOfDividendNumber >= divisor
-                String lastReminder =
+                String lastRemainder =
                         String.format(
                                 "%" + (indexOfDigitInArray + ADDITIONAL_SPACE_IN_LINE) + "s",
                                 UNDERSCORE + partOfDividendNumber);
-                result.append(lastReminder).append(LINE_FEED);
+                result.append(lastRemainder).append(LINE_FEED);
 
                 String multiply =
                         String.format(
                                 "%" + (indexOfDigitInArray + ADDITIONAL_SPACE_IN_LINE) + "d", resultOfDividing);
                 result.append(multiply).append(LINE_FEED);
 
-                Integer tab = lastReminder.length() - calculateDigits(resultOfDividing);
+                Integer tab = lastRemainder.length() - calculateDigits(resultOfDividing);
                 result.append(createDivisor(resultOfDividing, tab)).append(LINE_FEED);
 
                 quotient.append(partOfDividendNumber / divisorAbsolute);

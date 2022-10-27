@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class LongDivisionTest {
-    private final LongDivision longDivision = new LongDivision();
     private final static String expectedResultOfDividing = "_100│3\n" +
             " 10 │--\n" +
             " -- │33\n" +
@@ -14,6 +13,8 @@ class LongDivisionTest {
             "  10\n" +
             "  --\n" +
             "   1\n";
+
+    private final LongDivision longDivision = new LongDivision();
 
     @Test
     void shouldReturnFormattedDivisionResultIfValidParameters() {
